@@ -14,13 +14,27 @@ inquirer.prompt([
   },
   {
     type: 'input',
-    message: 'Please enter your team members name',
+    message: 'Please enter your team manager\'s name.',
     name: 'name'
   },
   {
     type: 'input',
-    message: 'Please enter your team members email',
+    message: 'Please enter your manager\'s email.',
     name: 'email'
   },
-
+  {
+    type: 'input',
+    message: 'Please enter your manager\'s ID number.',
+    name: 'id'
+  },
+  {
+    type: 'input',
+    message: 'Please enter your manager\'s office number.',
+    name: 'id'
+  },
+  {
+    type: 'confirm',
+    message: 'Would you like to add an Engineer or Intern?',
+    name: 'hiring'
+  },
 ])
