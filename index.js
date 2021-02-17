@@ -6,7 +6,9 @@ const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
 
-
+let newManager;
+let newEnginner;
+let NewIntern;
 
 inquirer.prompt([
   {
@@ -40,8 +42,7 @@ inquirer.prompt([
     name: 'addition'
   },
 ]).then(response => {
-  let newManager = response.name
-  newManager = new Manager(response.name, response.email, response.id, response.officeNumber)
+  newManager = new Manager(response.name, response.email, response.id, response.office)
 
   console.log('Here are your Manager results:')
   console.log(response)
@@ -80,8 +81,7 @@ inquirer.prompt([
         name: 'github'
       }
     ]).then(response => {
-      let newEngineer = response.name
-      newEngineer = new Engineer(response.name,  response.id, response.email, response.github )
+      newEngineer = new Engineer(response.name,  response.id, response.email, response.github)
       console.log(`Here are your Engineer\'s results:`)
       console.log(response)
     })
@@ -108,7 +108,6 @@ inquirer.prompt([
     name: 'school'
   }
     ]).then(response => {
-    let newIntern = response.name
     newIntern = new Intern(response.name, response.id, response.email, response.school)
     console.log(`Here are your Intern\'s results:` + response)
     })
@@ -127,6 +126,32 @@ inquirer.prompt([
   </head>
   <body style="background-color: darkgrey;">
     <header class="jumbotron bg-dark" style="text-align: center; font-size: 34px; color: antiquewhite; font-weight: bolder; border-bottom: antiquewhite solid 5px;">Your New Team</header>
+
+  <div class="container-fluid">
+  <div class="row">
+  <div class="col-md-12">
+
+    <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">${newManager.getName()}</h5>
+      <p class="card-text">${newManager.getRole()}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">${newManager.getId()}</li>
+      <li class="list-group-item">${newManager.getOfficeNumber()}</li>
+    </ul>
+    <div class="card-body">
+      <a href="mailto: ${newManager.getEmail()}" class="card-link">${newManager.getEmail()}</a>
+    </div>
+    </div>
+
+    </div>
+    </div>
+    </div>
+
+  
+
+
   </body>
   </html>
   `
