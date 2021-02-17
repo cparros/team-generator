@@ -1,0 +1,27 @@
+{
+  "name": "team-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cparros/team-generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cparros/team-generator/issues"
+  },
+  "homepage": "https://github.com/cparros/team-generator#readme",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
