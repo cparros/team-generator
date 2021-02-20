@@ -1,161 +1,142 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 
+let finalEmployeeList = []
 const Employee = require('./lib/Employee');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager');
 
-let newManager;
-let newEnginner;
-let NewIntern;
+const engineerCard = require('./src/newEngineer')
+const managerCard = require('./src/newManager')
+const internCard = require('./src/newIntern')
 
-inquirer.prompt([
+
+inquirer.registerPrompt('recursive', require('inquirer-recursive'));
+inquirer.prompt([{
+    type: 'recursive',
+    message: 'Would you like to add to your team of employees?',
+    name: 'employees',
+    prompts: [
   {
-    type: 'confirm',
-    message: 'Would you like to create a team roster?',
-    name: 'confirmation'
+        type: 'checkbox',
+        name: 'role',
+        Message: 'Please select your employee\'s role.',
+        choices: ['Engineer', 'Intern', 'Manager']
   },
   {
     type: 'input',
-    message: 'Please enter your team manager\'s first and last name.',
+    message: 'Please enter your employee\'s first and last name.',
     name: 'name'
   },
   {
     type: 'input',
-    message: 'Please enter your manager\'s email.',
+    message: 'Please enter your employee\'s email.',
     name: 'email'
   },
   {
     type: 'input',
-    message: 'Please enter your manager\'s ID number.',
+    message: 'Please enter your employee\'s ID number.',
     name: 'id'
   },
   {
     type: 'input',
-    message: 'Please enter your manager\'s office number.',
+    message: 'Please enter your employee\'s office number.(If not a manager press ENTER to skip).',
     name: 'office'
   },
   {
-    type: 'confirm',
-    message: 'Would you like to add an Engineer or Intern?',
-    name: 'addition'
-  },
-]).then(response => {
-  newManager = new Manager(response.name, response.email, response.id, response.office)
-
-  console.log('Here are your Manager results:')
-  console.log(response)
-  inquirer.prompt([
-  {
-    type: 'checkbox',
-    name: 'employee',
-    Message: 'Who would you like to add?',
-    choices: ['Engineer', 'Intern']
-  },
-]).then(response => {
-
-  console.log(`Here are your next employee\'s results:`)
-  console.log(response)
-
-  if(response.employee[0] === 'Engineer'){
-    inquirer.prompt([
-      {
-        type: 'input',
-        message: 'Please enter your team Engineer\'s first and last name.',
-        name: 'name'
-      },
-      {
-        type: 'input',
-        message: 'Please enter your Engineer\'s email.',
-        name: 'email'
-      },
-      {
-        type: 'input',
-        message: 'Please enter your Engineer\'s ID number.',
-        name: 'id'
-      },
-      {
-        type: 'input',
-        message: 'What Engineer\'s Github Username?',
-        name: 'github'
-      }
-    ]).then(response => {
-      newEngineer = new Engineer(response.name,  response.id, response.email, response.github)
-      console.log(`Here are your Engineer\'s results:`)
-      console.log(response)
-    })
-  } else if(response.employee[0] === 'Intern')
-  inquirer.prompt([
-  {
     type: 'input',
-    message: 'Please enter your intern\'s first and last name.',
-    name: 'name'
+    message: 'Please enter your employee\'s Github Username.(If not an engineer press ENTER to skip).',
+    name: 'github' 
   },
   {
     type: 'input',
-    message: 'Please enter your intern\'s email.',
-    name: 'email'
-  },
-  {
-    type: 'input',
-    message: 'Please enter your intern\'s ID number.',
-    name: 'id'
-  },
-  {
-    type: 'input',
-    message: 'What school does your intern attend?',
+    message: 'Please enter your employee\'s school.(If not an Intern press ENTER to skip).',
     name: 'school'
-  }
-    ]).then(response => {
-    newIntern = new Intern(response.name, response.id, response.email, response.school)
-    console.log(`Here are your Intern\'s results:` + response)
-    })
+  },
+  
+  ]}
+])
+.then(function(response) {
+ 
+    let employees = response.employees
+  employees.forEach(employee => {
+    
+    if(employee.role[0] === 'Intern'){
+      employee = new Intern(employee.name, employee.email, employee.id, employee.school)
+      finalEmployeeList.push(employee)
+    } else if(employee.role[0] === 'Engineer'){
+      employee = new Engineer(employee.name, employee.email, employee.id, employee.github)
+      finalEmployeeList.push(employee)
+    } else if(employee.role[0] === 'Manager'){
+      employee = new Manager(employee.name, employee.email, employee.id, employee.office)
+      finalEmployeeList.push(employee)
+    }
+  })
+ }).then(response => {
+    let workerList = finalEmployeeList
+    console.log('workerList')
+    console.log(workerList)
+   
+
+      let addCards = function (arr) {
+
+
+       return arr.map(element => {
+          if(element.getRole() === 'Manager'){
+            return managerCard(element)
+          }
+          if(element.getRole() === 'Engineer'){
+            return engineerCard(element)
+          }
+          if(element.getRole() === 'Intern'){
+            return internCard(element)
+          }
+        })
+      } 
+
+      addCards(workerList)
+    
+
+
+     
+      
+
+    let html = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+      <title>Your New Team</title></title>
+      <script
+      src="https://code.jquery.com/jquery-3.5.1.js"
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+      crossorigin="anonymous"></script>
+      </head>
+      <body style="background-color: darkgrey;">
+      <header class="jumbotron bg-dark" style="text-align: center; font-size: 34px; color: antiquewhite; font-weight: bolder; border-bottom: antiquewhite solid 5px;">Your New Team</header>
+    
+      <div class="container-fluid">
+      <div class="row">
+      <div class="col-md-12" id="cards">
+      
+      ${addCards(workerList)}
+
+      </div>
+      </div>   
+      </div>   
+
+      <script type="module" src="index.js"></script>
+      </body>
+      </html>
+    `
+  
+    fs.writeFile('team.html', html, (err) => 
+    err ? console.error(err) : console.log('Success!'))
+
   })
 
-}).then(response => {
-  
-  const html = 
-  `
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <title>Your New Team</title></title>
-  </head>
-  <body style="background-color: darkgrey;">
-    <header class="jumbotron bg-dark" style="text-align: center; font-size: 34px; color: antiquewhite; font-weight: bolder; border-bottom: antiquewhite solid 5px;">Your New Team</header>
-
-  <div class="container-fluid">
-  <div class="row">
-  <div class="col-md-12">
-
-    <div class="card" style="width: 18rem;">
-    <div class="card-body">
-      <h5 class="card-title">${newManager.getName()}</h5>
-      <p class="card-text">${newManager.getRole()}</p>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">${newManager.getId()}</li>
-      <li class="list-group-item">${newManager.getOfficeNumber()}</li>
-    </ul>
-    <div class="card-body">
-      <a href="mailto: ${newManager.getEmail()}" class="card-link">${newManager.getEmail()}</a>
-    </div>
-    </div>
-
-    </div>
-    </div>
-    </div>
 
   
 
-
-  </body>
-  </html>
-  `
-
-  fs.writeFile('team.html', html, (err) => 
-err ? console.error(err) : console.log('Success!'))
-})
