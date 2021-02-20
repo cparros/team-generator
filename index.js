@@ -41,17 +41,17 @@ inquirer.prompt([{
   },
   {
     type: 'input',
-    message: 'Please enter your employee\'s office number.(If not a manager press ENTER to skip).',
+    message: 'Please enter your employee\'s office number.(If NOT a manager PRESS ENTER to skip).',
     name: 'office'
   },
   {
     type: 'input',
-    message: 'Please enter your employee\'s Github Username.(If not an engineer press ENTER to skip).',
+    message: 'Please enter your employee\'s Github Username.(If NOT an engineer PRESS ENTER to skip).',
     name: 'github' 
   },
   {
     type: 'input',
-    message: 'Please enter your employee\'s school.(If not an Intern press ENTER to skip).',
+    message: 'Please enter your employee\'s school.(If NOT an Intern press PRESS to skip).',
     name: 'school'
   },
   
