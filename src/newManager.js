@@ -6,9 +6,11 @@ const managerCard = (element) => {
       <h3>${element.getName()}</h3>
       <h5>Engineer</h5>
   </div>
+  <div class="card-body">
   <p class="card-text">Employee ID: ${element.getId()}</p>
   <p class="card-text"><a href="mailto:">Email: ${element.getEmail()}</a></p>
   <p class="card-text">Office Number: ${element.getOfficeNumber()}</p>
+  </div>
 </div>
 `
 }
