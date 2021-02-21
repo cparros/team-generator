@@ -4,7 +4,7 @@ const managerCard = (element) => {
   <div class="card">
   <div class="card-header">
       <h3>${element.getName()}</h3>
-      <h5>Engineer</h5>
+      <h5>Manager</h5>
   </div>
   <div class="card-body">
   <p class="card-text">Employee ID: ${element.getId()}</p>
